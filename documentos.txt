@@ -1,0 +1,184 @@
+
+product.py
+--------------
+
+products = [
+   {"name": "laptop", "price": 800, "quantity": 4}
+   {"name": "mouse", "price": 40, "quantity": 5}
+   {"name": "monitor", "price": 400, "quantity": 6}
+]
+
+main.py
+from flask import Flask, jsonify 
+# jsonify  nos va permitir converir u json a navegador
+app = Flask(__name__)
+
+@app.route('/)
+def ping()
+    return jsonify('message': 'Hola')
+
+from products import products
+
+
+
+@app.route('/products')
+def getProducts():
+    return jsonnify(products) # Esto nos va permitir traer los productos
+
+ #Tambien podemos ponerlo dentro de una propiedad 
+   # return jsonify({"products": products})
+   #  return jsonify({"products": products, "message": "Products List"})
+
+   # Para obtener un solo datos se hace de esta manera 
+    # Se debe crear una ruta 
+     #@app.route('/products/<string:product_name>')
+
+
+Para obtener un producto 
+lo podemos hacer con un for
+[producy for product in products if product ['name'] == product_name]
+
+Código para saber si un producto se encuentra
+
+if(len(productsFound) > 0):
+	return jsonify({"product": productsFound[0]})
+return jsonify({"message": "Product not found"})
+
+-----------------------------------------------------
+
+De usar postma podemos usar también insomnia
+
+http://localhost:8000/products/monitor
+
+
+# Nos va serbir para crear datos 
+@app.route('/products', methods=['POST'])
+def addProduct():
+	return 'Recibido'
+
+------------------------------------------------------
+
+#De esta forma le enviamos un datos al servidor 
+{
+ "Hola": "Como estas!!"
+}
+
+# Para que esto se vea por consola se debe usar otro metodos para 
+#procesar los datos 
+#Este print(request.json) se va usar en el siguiente codigo 
+@app.route('/products', methods=['POST'])
+print(request.json)
+def addProduct():
+	return 'Recibido'
+# Ojo ese request se debe llamar arriba ejemplo 
+from  flask import Flask, jsonify, request
+----------------------------------------------------------------
+#Ahora para guardarlo se debe crear una variable voy con el ejemplo
+    
+new_product = {
+  "name": request.json['name'],
+  "price": request.json['price'],
+  "quantity": request.json['quantity']
+}
+
+
+# De esta forma estamos añadiendo un nuevo producto 
+# A mi otro archivo
+    products.append(new_product)
+  return jsonify({"message": "Product added succefully", "products": products})
+
+
+# En la aplicacion de Insomnia vamos a crear 
+# Esto es un ejemplo de lo que se puede hacer 
+{
+ "name": "mouse gaming",
+ "price": 45.99,
+ "quantity": 2
+}
+---------------------------------------------------------
+
+#como podemos actualizar un datos 
+#Se debe crear otra ruta. Ejemplo 
+
+@app.route('/products/<string:product_name>', methos=['PUT'])
+def editProduct(product_name):
+   productFound = [product for product  in products if product['name'] == product_name ]
+    # Despues validamos 
+
+ if(len(productFound) > 0):
+	 productFound[0]['name']= request.json['name']
+         productFound[0]['price']= request.json['price']
+         productFound[0]['quantity']= request.json['quantity']
+
+         return jsonify({
+           "message": "Product Updated",
+           "product": productFound[0]
+    })
+   
+--------------------------------------------------------
+#Para eliminar tambien podemos crear otra ruta 
+@app.route('/products/<string:product_name>', methods['DELETE'])
+def deleteProduct(product_name):
+	productsFound = [product for product in product if product['name'] == product_name ]
+        if len(productsFound) >0:
+           products.remove(productFound)
+           return jsonify({
+                 "message": "Product Deleted",
+                 "products": products
+             })
+
+         return jsonify({"message": "Product Not Found"})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
